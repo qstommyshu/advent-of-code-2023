@@ -6,12 +6,14 @@ fn main() {
     dbg!(output);
 }
 
+// TODO: parse to struct is a good idea
 struct Race {
     time: u32,
     dist: u32,
 }
 
 fn part1(input: &str) -> String {
+    // TODO: split_once split to an option tuple
     let (time, dist) = input.split_once("\n").unwrap();
     let time: Vec<u32> = time
         .split_whitespace()
