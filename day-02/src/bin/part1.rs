@@ -46,38 +46,36 @@ impl Draw {
     }
 }
 
-fn parse_input(input: &str) -> Vec<Game> {
-    input
-        .lines()
-        .enumerate()
-        .map(
-            /* turn a line into a game */
-            |(idx, line)| {
-                let (_, draws) = line.split_once(": ").unwrap();
-                let draws = draws.split("; ").map(Draw::new).collect();
-                Game { id: idx + 1, draws }
-            }
-        )
-        .collect()
-    // .filter(/* filter out impossible game */)
-    // .map(/* get id of remaining games */)
-    // .sum()
-}
-
 fn part1(input: &str) -> String {
     // Goal: group Games, Games contains Draws
     // 1. split input into lines
     // 2. each line, parse to get three draws
     // Now we get Games{Draws{RGB}}
     // then check with 12R, 13G, 14B
-    let games = parse_input(input);
-    games
-        .into_iter()
-        .filter(|game| {
-            // filter out games where game is not possible
-            game.draws.iter().all(|draw| draw.red <= 12 && draw.green <= 13 && draw.blue <= 14)
-        })
-        .map(|game| game.id)
+
+    input
+        .lines()
+        .enumerate()
+        .map(
+            /* turn a line into a game of draws */
+            |(idx, line)| {
+                /* map games into games struct */
+                let (_, draws) = line.split_once(": ").unwrap();
+                let draws = draws.split("; ").map(Draw::new).collect();
+                // dbg!(draws);
+                Game { id: idx + 1, draws }
+            }
+        )
+        .filter(
+            /* filter out impossible games, R>12, G>13, B>14 */
+            |game| {
+                game.draws.iter().all(|draw| draw.red <= 12 && draw.green <= 13 && draw.blue <= 14)
+            }
+        )
+        .map(
+            /* get id of the remaning games */
+            |game| game.id
+        )
         .sum::<usize>()
         .to_string()
 }
