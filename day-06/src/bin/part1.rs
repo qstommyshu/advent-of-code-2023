@@ -17,7 +17,7 @@ fn part1(input: &str) -> String {
     let (time, dist) = input.split_once("\n").unwrap();
     let time: Vec<u32> = time
         .split_whitespace()
-        .filter_map(|num| { num.parse::<u32>().ok() })
+        .filter_map(|num: &str| { num.parse::<u32>().ok() })
         .collect();
     let dist: Vec<u32> = dist
         .split_whitespace()
